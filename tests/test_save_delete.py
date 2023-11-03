@@ -1,14 +1,14 @@
 from pathlib import Path
 
 import pytest
-from src.data_storage import DelAndSave
+from src.data_storage import WorkWithJson
 
 way_json = Path(__file__).parent.parent.joinpath("data").joinpath("save_vacancy.json")
 
 
 @pytest.fixture()
 def class_del_and_save():
-    return DelAndSave(way_json)
+    return WorkWithJson(way_json)
 
 
 def test_save(class_del_and_save):

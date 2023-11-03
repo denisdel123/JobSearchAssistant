@@ -17,7 +17,7 @@ class SaveABC(ABC):
         pass
 
 
-class DelAndSave(SaveABC):
+class WorkWithJson(SaveABC):
     def __init__(self, way_json):
         self.way_json = way_json
 
@@ -85,3 +85,30 @@ class DelAndSave(SaveABC):
                 i += 1
         with open(self.way_json, 'w', encoding='utf8') as fail:
             json.dump(read_json, fail, indent=4)
+
+    def save_sorted_list(self, file_save, platform):
+
+        list_save = {
+            "id": '',
+            "salaryFrom": file_save["salaryFrom"],
+            "salaryTo": file_save["salaryTo"],
+            "currency": file_save["currency"],
+            "salaryBool": file_save["salaryBool"],
+            "snippet": file_save["snippet"],
+            "alternate_url": file_save["alternate_url"],
+            "name": file_save["name"],
+            'created_at': file_save['created_at'],
+            'city': file_save['city']
+        }
+        with open(self.way_json, 'r', encoding='utf8') as file:
+            read_json = json.load(file)
+
+            read_json[platform].append(list_save)
+            i = 1
+            for item in read_json[platform]:
+                item['id'] = i
+                i += 1
+        with open(self.way_json, 'w', encoding='utf8') as fail:
+            json.dump(read_json, fail, indent=4)
+
+
