@@ -100,6 +100,7 @@ class WorkWithJson(SaveABC):
             'created_at': file_save['created_at'],
             'city': file_save['city']
         }
+
         with open(self.way_json, 'r', encoding='utf8') as file:
             read_json = json.load(file)
 
@@ -110,5 +111,3 @@ class WorkWithJson(SaveABC):
                 i += 1
         with open(self.way_json, 'w', encoding='utf8') as fail:
             json.dump(read_json, fail, indent=4)
-
-
