@@ -11,11 +11,35 @@
             "name": "developer",
             "created_at": "2023-10-23 21:21:21",
             "city": "Moscow"
+        },
+        {
+            "id": 2,
+            "salaryFrom": "23000",
+            "salaryTo": "55000",
+            "currency": "RUB",
+            "salaryBool": true,
+            "snippet": "about",
+            "alternate_url": "https",
+            "name": "developer",
+            "created_at": "2023-10-23 21:21:21",
+            "city": "Moscow"
         }
     ],
     "superJob": [
         {
             "id": 1,
+            "salaryFrom": "23000",
+            "salaryTo": "55000",
+            "currency": "RUB",
+            "salaryBool": true,
+            "snippet": "about",
+            "alternate_url": "https",
+            "name": "developer",
+            "created_at": "2023-10-23 21:21:21",
+            "city": "Moscow"
+        },
+        {
+            "id": 2,
             "salaryFrom": "23000",
             "salaryTo": "55000",
             "currency": "RUB",

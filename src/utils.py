@@ -3,6 +3,8 @@ from datetime import datetime
 
 from src import getting_data, data_storage
 
+"""Вывод вакансии на консоль и сохранение по запросу пользователя"""
+
 
 def interaction_with_hh(word, city, api_hh, way_json):
     obj_hh = getting_data.WorkWithPlatformshh.get_vacancies_hh(word, api_hh, city)
@@ -32,12 +34,15 @@ def interaction_with_hh(word, city, api_hh, way_json):
 Дата создания: {create_date}\nКраткое описание вакансии: {snippet}\nСсылка: {link}\n")
 
         print('сохранить вакансии? yes/no')
-        answer_save = input()
+        answer_save = input(': ')
         if answer_save == 'yes':
             hh_save = data_storage.WorkWithJson(way_json)
             hh_save.save_in_list(res, 'hh')
         else:
             continue
+
+
+"""Вывод вакансии на консоль и сохранение по запросу пользователя"""
 
 
 def interaction_with_super(word, city, way_json, url_superJob, header):
@@ -69,12 +74,15 @@ def interaction_with_super(word, city, way_json, url_superJob, header):
 Дата создания: {create_date}\nКраткое описание вакансии: {snippet}\nСсылка: {link}\n")
 
         print('сохранить вакансию? yes/no')
-        answer_save = input()
+        answer_save = input(': ')
         if answer_save == 'yes':
             super_save = data_storage.WorkWithJson(way_json)
             super_save.save_in_list(res, 'superJob')
         else:
             continue
+
+
+"""Сортировка вакансий по дате создания"""
 
 
 def sort_vacancy_date(way_json):
@@ -109,7 +117,7 @@ def sort_vacancy_date(way_json):
 
                     if item1 == i['created_at']:
 
-                        obj_look.save_sorted_list(i, plat)
+                        obj_look.save_in_list(i, plat)
 
                     else:
                         continue
@@ -118,6 +126,9 @@ def sort_vacancy_date(way_json):
         except Exception:
             print('no element')
             continue
+
+
+"""Сортировка вакансии по зарплате"""
 
 
 def sort_vacancy_salary(way_json):
@@ -146,38 +157,49 @@ def sort_vacancy_salary(way_json):
             obj_save.save_in_list(item, plat)
 
 
+"""Вывод вакансии на консоль"""
+
+
 def look_list_vacancy(way_json):
     with open(way_json, 'r', encoding='utf8') as file:
         result = json.load(file)
 
-        if result['hh'] is not None:
-            for item_hh in result['hh']:
+        plat = ['hh', 'superJob']
 
-                vacancy_id = item_hh['id']
-                name_vacancy = item_hh['name']
-                city = item_hh['city']
-                create_date = item_hh['created_at']
-                link = item_hh['alternate_url']
-                snippet = item_hh['snippet']
-                salary_from = item_hh['salaryFrom']
-                salary_to = item_hh['salaryTo']
-                currency = item_hh['currency']
+        for platform in plat:
 
-                if salary_from is not None and salary_to is not None:
-                    salary = f"От: {salary_from} {currency} До: {salary_to} {currency}"
-                elif salary_from is not None:
-                    salary = f"От {salary_from} {currency} До: Не указанно"
-                elif salary_to is not None:
-                    salary = f"От: Не указано До: {salary_to} {currency}"
-                else:
-                    salary = f"От: Не указано До: Не указанно"
+            if result[platform] is not None:
+                for item_hh in result[platform]:
 
-                info = f"id вакансии: {vacancy_id}\nНаименование вакансии: {name_vacancy}\nГород: {city}\nЗарплата: {salary}\n\
+                    vacancy_id = item_hh['id']
+                    name_vacancy = item_hh['name']
+                    city = item_hh['city']
+                    create_date = item_hh['created_at']
+                    link = item_hh['alternate_url']
+                    snippet = item_hh['snippet']
+                    salary_from = item_hh['salaryFrom']
+                    salary_to = item_hh['salaryTo']
+                    currency = item_hh['currency']
+
+                    if salary_from is not None and salary_to is not None:
+                        salary = f"От: {salary_from} {currency} До: {salary_to} {currency}"
+                    elif salary_from is not None:
+                        salary = f"От {salary_from} {currency} До: Не указанно"
+                    elif salary_to is not None:
+                        salary = f"От: Не указано До: {salary_to} {currency}"
+                    else:
+                        salary = f"От: Не указано До: Не указанно"
+
+                    info = f"Платформа {platform}\nid вакансии: {vacancy_id}\nНаименование вакансии: \
+{name_vacancy}\nГород: {city}\nЗарплата: {salary}\n\
 Дата создания: {create_date}\nКраткое описание вакансии: {snippet}\nСсылка: {link}\n"
 
-                print(info)
-            else:
-                print('список пуст')
+                    print(info)
+                else:
+                    print('список пуст')
+
+
+"""Удалить вакансии по id"""
 
 
 def delete_id(way_json, id, platform):
@@ -185,6 +207,20 @@ def delete_id(way_json, id, platform):
     obj_delete.delete_from_list_item(id, platform)
 
 
+"""Удалить все вакансии"""
+
+
 def delete_all(way_json):
     obj_delete = data_storage.WorkWithJson(way_json)
     obj_delete.delete_from_list_all()
+
+
+"""Очистка json file перед работой приложения"""
+
+
+def clin_json(way_json):
+    my_dict = {'hh': [],
+               'superJob': []}
+
+    with open(way_json, 'w', encoding='utf8') as file:
+        json.dump(my_dict, file, indent=4)

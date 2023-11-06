@@ -1,25 +1,14 @@
 import json
-from abc import ABC, abstractmethod
+from abstr_classes import SaveABC
 
-
-class SaveABC(ABC):
-
-    @abstractmethod
-    def delete_from_list_all(self):
-        pass
-
-    @abstractmethod
-    def delete_from_list_item(self, delete_fail, platform):
-        ...
-
-    @abstractmethod
-    def save_in_list(self, save_fail, platform):
-        pass
+"""Класс для работы с json file"""
 
 
 class WorkWithJson(SaveABC):
     def __init__(self, way_json):
         self.way_json = way_json
+
+    """Очистка json file по запросу пользователя"""
 
     def delete_from_list_all(self):
 
@@ -28,6 +17,8 @@ class WorkWithJson(SaveABC):
 
         with open(self.way_json, 'w', encoding='utf8') as file:
             json.dump(my_dict, file, indent=4)
+
+    """Удаление вакансии по id"""
 
     def delete_from_list_item(self, file_id, platform):
 
@@ -62,6 +53,8 @@ class WorkWithJson(SaveABC):
 
                 json.dump(new_list, file, indent=4)
 
+    """Сохранение вакансии каждая вакансия сохраняется отдельно"""
+
     def save_in_list(self, save_file, platform):
         list_save = {
             "id": '',
@@ -86,28 +79,4 @@ class WorkWithJson(SaveABC):
         with open(self.way_json, 'w', encoding='utf8') as fail:
             json.dump(read_json, fail, indent=4)
 
-    def save_sorted_list(self, file_save, platform):
 
-        list_save = {
-            "id": '',
-            "salaryFrom": file_save["salaryFrom"],
-            "salaryTo": file_save["salaryTo"],
-            "currency": file_save["currency"],
-            "salaryBool": file_save["salaryBool"],
-            "snippet": file_save["snippet"],
-            "alternate_url": file_save["alternate_url"],
-            "name": file_save["name"],
-            'created_at': file_save['created_at'],
-            'city': file_save['city']
-        }
-
-        with open(self.way_json, 'r', encoding='utf8') as file:
-            read_json = json.load(file)
-
-            read_json[platform].append(list_save)
-            i = 1
-            for item in read_json[platform]:
-                item['id'] = i
-                i += 1
-        with open(self.way_json, 'w', encoding='utf8') as fail:
-            json.dump(read_json, fail, indent=4)

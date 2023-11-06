@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -14,7 +15,14 @@ header = os.getenv("KEY_SUPER")
 way_json = Path(__file__).parent.parent.joinpath("data").joinpath("save_vacancy.json")
 
 if __name__ == '__main__':
+
+    """Вызов функции очистки """
+
+    utils.clin_json(way_json)
+
     print(f"Привет! Я помогу найти работу.\n")
+
+    """Бесконечный цикл для работы с пользователем"""
 
     while True:
 
