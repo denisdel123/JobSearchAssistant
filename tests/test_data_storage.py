@@ -4,12 +4,12 @@ from pathlib import Path
 import pytest
 from src.data_storage import WorkWithJson
 
-way_json = Path(__file__).parent.parent.joinpath("data").joinpath("test_vacancies.json")
+way_json_test = Path(__file__).parent.parent.joinpath("data").joinpath("test_vacancies.json")
 
 
 @pytest.fixture()
 def class_del_and_save():
-    return WorkWithJson(way_json)
+    return WorkWithJson(way_json_test)
 
 
 def test_save(class_del_and_save):
@@ -26,7 +26,7 @@ def test_save(class_del_and_save):
     class_del_and_save.save_in_list(file, 'superJob')
     class_del_and_save.save_in_list(file, 'hh')
 
-    with open(way_json, 'r', encoding='utf8') as file:
+    with open(way_json_test, 'r', encoding='utf8') as file:
         res = json.load(file)
         test = res['superJob'][0]
 
@@ -39,7 +39,7 @@ def test_save(class_del_and_save):
 
 def test_delete(class_del_and_save):
     class_del_and_save.delete_from_list_all()
-    with open(way_json, 'r', encoding='utf8') as file:
+    with open(way_json_test, 'r', encoding='utf8') as file:
         res = json.load(file)
         assert res['hh'] == []
         assert res['superJob'] == []
@@ -64,13 +64,13 @@ def test_delete_from_list_item(class_del_and_save):
         for g in range(0, 2):
             class_del_and_save.save_in_list(list_save, z)
 
-    with open(way_json, 'r', encoding='utf8') as f:
+    with open(way_json_test, 'r', encoding='utf8') as f:
         result = json.load(f)
         test1 = len(result['hh'])
 
         class_del_and_save.delete_from_list_item(1, 'hh')
 
-    with open(way_json, 'r', encoding='utf8') as f:
+    with open(way_json_test, 'r', encoding='utf8') as f:
         result = json.load(f)
         test2 = len(result['hh'])
 
