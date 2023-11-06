@@ -1,14 +1,6 @@
-from abc import ABC, abstractmethod
 from datetime import datetime
-
 import requests
-
-
-class VacancyAPI(ABC):
-
-    @abstractmethod
-    def return_dikt(self):
-        pass
+from abstr_classes import VacancyAPI
 
 
 class WorkWithPlatformshh(VacancyAPI):
@@ -153,18 +145,27 @@ class WorkWithPlatformsSuperJob(WorkWithPlatformshh):
 
             for j_fail in result['objects']:
 
-                if j_fail["payment_from"] or j_fail["payment_to"]:
-                    try:
-                        list_for_dict["salaryFrom"] = j_fail['payment_from']
-                    except KeyError:
-                        list_for_dict["salaryFrom"] = 'не указано'
+                try:
 
-                    try:
+                    if j_fail["payment_from"] != '' and j_fail["payment_from"] != 0:
+                        list_for_dict["salaryFrom"] = j_fail['payment_from']
+
+                    else:
+                        list_for_dict["salaryFrom"] = None
+
+                except KeyError:
+                    list_for_dict['salaryFrom'] = None
+
+                try:
+
+                    if j_fail["payment_to"] != '' and j_fail["payment_to"] != 0:
                         list_for_dict["salaryTo"] = j_fail["payment_to"]
-                    except KeyError:
-                        list_for_dict["salaryTo"] = 'не указано'
-                else:
-                    list_for_dict["salaryBool"] = False
+
+                    else:
+                        list_for_dict["salaryTo"] = None
+
+                except KeyError:
+                    list_for_dict["salaryTo"] = None
 
                 ate_published = datetime.fromtimestamp(j_fail['date_published'])
 
